@@ -74,6 +74,10 @@
                 <source src="sky.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
+            <audio id="my-audio" autoplay>
+                <source src="cloudSoud.m4a" type="audio/mpeg">
+                Your browser does not support the audio tag.
+            </audio>
         </div>
     </div>
 
@@ -82,6 +86,8 @@
         const myVideo = document.getElementById('my-video');
         const mainContainer = document.getElementById('main-container')
         const videoContainer = document.getElementById('video-container')
+        const myAudio = document.getElementById('my-audio');
+
         function showPopup(color) {
             const popup = document.getElementById('popup');
             popup.textContent = `You have clicked on ${color} color.`;
@@ -104,9 +110,27 @@
 
         videoContainer.addEventListener('click', function (event) {
             myVideo.play();
+            myAudio.currentTime = myVideo.currentTime;
+            console.log("play", myAudio.currentTime)
+            myAudio.play();
             popup.classList.add('hidden');
         });
 
+        myVideo.addEventListener('play', () => {
+            // myAudio.currentTime = myVideo.currentTime;
+            // console.log("play", myAudio.currentTime)
+            // myAudio.play();
+        });
+
+        myVideo.addEventListener('pause', () => {
+            console.log("pause")
+            myAudio.pause();
+        });
+
+        myVideo.addEventListener('ended', () => {
+            myAudio.currentTime = 0;
+            myAudio.pause();
+        });
     </script>
 </body>
 
