@@ -74,10 +74,6 @@
                 <source src="sky.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <audio id="my-audio" autoplay>
-                <source src="cloudSoud.m4a" type="audio/mpeg">
-                Your browser does not support the audio tag.
-            </audio>
         </div>
     </div>
 
@@ -86,7 +82,6 @@
         const myVideo = document.getElementById('my-video');
         const mainContainer = document.getElementById('main-container')
         const videoContainer = document.getElementById('video-container')
-        const myAudio = document.getElementById('my-audio');
 
         function showPopup(color) {
             const popup = document.getElementById('popup');
@@ -95,6 +90,8 @@
             popup.style.color = 'white';
             popup.classList.remove('hidden');
             myVideo.pause();
+
+            speak(`You have clicked on ${color} color.`)
         }
 
         myVideo.addEventListener("timeupdate", function () {
@@ -110,27 +107,44 @@
 
         videoContainer.addEventListener('click', function (event) {
             myVideo.play();
-            myAudio.currentTime = myVideo.currentTime;
-            console.log("play", myAudio.currentTime)
-            myAudio.play();
+            // myAudio.currentTime = myVideo.currentTime;
+            // console.log("play", myAudio.currentTime)
+            // myAudio.play();
             popup.classList.add('hidden');
         });
 
         myVideo.addEventListener('play', () => {
-            // myAudio.currentTime = myVideo.currentTime;
-            // console.log("play", myAudio.currentTime)
-            // myAudio.play();
+            if (myVideo.currentTime == 0) {
+                speak("Video started")
+            } else {
+                speak("Video resumed, please click on any color box.")
+            }
         });
 
         myVideo.addEventListener('pause', () => {
             console.log("pause")
-            myAudio.pause();
+            // myAudio.pause();
         });
 
         myVideo.addEventListener('ended', () => {
-            myAudio.currentTime = 0;
-            myAudio.pause();
+            // myAudio.currentTime = 0;
+            // myAudio.pause();
         });
+
+        const speak = (message) => {
+            // Create a new instance of the SpeechSynthesisUtterance object
+            const msg = new SpeechSynthesisUtterance();
+
+            // Set the text that you want to synthesize
+            msg.text = message;
+
+            // Set the voice that you want to use for synthesis
+            msg.voice = window.speechSynthesis.getVoices()[0];
+
+            // Synthesize the speech and play it
+            window.speechSynthesis.speak(msg);
+        }
+
     </script>
 </body>
 
